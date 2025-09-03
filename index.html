@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 Interactive Music Playlist Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>My Playlist</h1>
+
+        <div class="controls">
+            <input type="text" id="searchInput" placeholder="Search by song or artist...">
+            <button id="shuffleBtn">🔀 Shuffle Playlist</button>
+        </div>
+
+        <form id="addSongForm">
+            <input type="text" id="songName" placeholder="Song Name" required>
+            <input type="text" id="artistName" placeholder="Artist Name" required>
+            <button type="submit">➕ Add Song</button>
+        </form>
+
+        <ul id="playlist"></ul>
+
+        <div class="now-playing-section">
+            <h3 id="nowPlayingTitle">Now Playing:</h3>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+    </div>
+    
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
