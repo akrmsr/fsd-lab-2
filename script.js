@@ -1,5 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Check if the current page is the sign-up page
+    const signupForm = document.getElementById('signupForm');
+
+    if (signupForm) {
+        signupForm.addEventListener('submit', function(event) {
+            // Get form field values
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            // Perform simple validation
+            if (name === '' || email === '' || password === '') {
+                alert('Please fill out all fields to sign up.');
+                event.preventDefault(); // Stop the form from submitting
+            } else {
+                // In a real application, you would send this data to a server
+                // for secure user creation.
+                // Since this is a front-end simulation, we'll redirect immediately.
+                alert('Sign up successful! Redirecting to your playlist.');
+                window.location.href = 'index.html'; // Redirect to the playlist page
+                event.preventDefault(); // Stop the default form submission
+            }
+        });
+    }
+
+    // --- The rest of your existing playlist manager code goes here ---
+    // Make sure to add this code to your new script.js file.
+    // It will only run on index.html since signupForm will be null.
+
     const playlistEl = document.getElementById('playlist');
+    if (!playlistEl) { // Check if it's the playlist page
+        return; // Stop if it's not the playlist page
+    }
+
     const addSongForm = document.getElementById('addSongForm');
     const songNameInput = document.getElementById('songName');
     const artistNameInput = document.getElementById('artistName');
@@ -20,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let progress = 0;
     let intervalId;
 
-    // Function to render the playlist on the page
     const renderPlaylist = () => {
         playlistEl.innerHTML = '';
         playlist.forEach((song, index) => {
@@ -40,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Add a new song
     addSongForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const newSong = {
@@ -53,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderPlaylist();
     });
 
-    // Delete or play a song
     playlistEl.addEventListener('click', (e) => {
         const target = e.target;
         if (target.classList.contains('delete-btn')) {
@@ -71,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Search and filter songs
     searchInput.addEventListener('keyup', () => {
         const query = searchInput.value.toLowerCase();
         const items = playlistEl.getElementsByClassName('playlist-item');
@@ -85,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Shuffle the playlist
     shuffleBtn.addEventListener('click', () => {
         for (let i = playlist.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -95,14 +123,12 @@ document.addEventListener('DOMContentLoaded', () => {
         stopPlayback();
     });
 
-    // Drag-and-drop to reorder using Sortable.js
     new Sortable(playlistEl, {
         animation: 150,
         onEnd: (evt) => {
             const movedItem = playlist.splice(evt.oldIndex, 1)[0];
             playlist.splice(evt.newIndex, 0, movedItem);
 
-            // Correctly update the nowPlayingIndex
             if (nowPlayingIndex !== -1) {
                 if (nowPlayingIndex === evt.oldIndex) {
                     nowPlayingIndex = evt.newIndex;
@@ -112,11 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     nowPlayingIndex++;
                 }
             }
-            renderPlaylist(); // Rerender to apply new indexes and highlighting
+            renderPlaylist();
         }
     });
 
-    // Simulate song playback
     const startPlayback = (index) => {
         nowPlayingIndex = index;
         nowPlayingTitle.textContent = `Now Playing: ${playlist[index].name} - ${playlist[index].artist}`;
@@ -124,9 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         progress = 0;
         progressBar.style.width = '0%';
-        clearInterval(intervalId); // Clear any existing interval
+        clearInterval(intervalId);
         intervalId = setInterval(() => {
-            progress += 1; // Increase by 1% per interval
+            progress += 1;
             progressBar.style.width = `${progress}%`;
 
             if (progress >= 100) {
@@ -136,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     startPlayback(nowPlayingIndex + 1);
                 }
             }
-        }, 100); // Update every 100 milliseconds
+        }, 100);
     };
 
     const stopPlayback = () => {
@@ -147,6 +172,5 @@ document.addEventListener('DOMContentLoaded', () => {
         renderPlaylist();
     };
 
-    // Initial render of the playlist
     renderPlaylist();
 });
